@@ -7,23 +7,35 @@ const Todo = new mongoose.model('Todo', todoSchema);
 
 // Get all todos
 router.get('/', async (req, res) => {
-  await Todo.find({ status: 'active' })
-    .select({
-      _id: 0,
-      __v: 0,
-      data: 0,
-    })
-    .limit(2)
-    .exec((err, data) => {
-      err
-        ? res.status(500).json({
-            error: 'There was a server side error',
-          })
-        : res.status(200).json({
-            result: data,
-            message: 'Success',
-          });
-    });
+  // Find with query and limit
+  // await Todo.find({ status: 'active' })
+  //   .select({
+  //     _id: 0,
+  //     __v: 0,
+  //     data: 0,
+  //   })
+  //   .limit(2)
+  //   .exec((err, data) => {
+  //     err
+  //       ? res.status(500).json({
+  //           error: 'There was a server side error',
+  //         })
+  //       : res.status(200).json({
+  //           result: data,
+  //           message: 'Success',
+  //         });
+  //   });
+  // Only find
+  await Todo.find({ status: 'active' }, (err, data) => {
+    err
+      ? res.status(500).json({
+          error: 'There was a server side error',
+        })
+      : res.status(200).json({
+          result: data,
+          message: 'Success',
+        });
+  }).clone();
 });
 
 // Get single todo
