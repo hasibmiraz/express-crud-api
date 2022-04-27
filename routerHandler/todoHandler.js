@@ -39,7 +39,28 @@ router.post('/all', async (req, res) => {
 });
 
 // put todo
-router.put('/:id', async (req, res) => {});
+router.put('/:id', async (req, res) => {
+  const result = await Todo.findByIdAndUpdate(
+    { _id: req.params.id },
+    {
+      $set: {
+        title: 'Updated todo 234',
+        status: 'active',
+      },
+    },
+    { new: true },
+    (err) => {
+      err
+        ? res.status(500).json({
+            error: 'There was a server side error',
+          })
+        : res.status(200).json({
+            message: 'Todo was updated successfully',
+          });
+    }
+  ).clone();
+  console.log(result);
+});
 
 // delete todo
 router.delete('/:id', async (req, res) => {});
