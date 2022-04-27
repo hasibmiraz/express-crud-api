@@ -1,5 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import todoHandler from './routerHandler/todoHandler.js';
+import 'dotenv/config';
 
 // Initialize express app
 const app = express();
@@ -9,7 +11,7 @@ app.use(express.json());
 const port = process.env.PORT || 3000;
 
 // DB connection with mongoose
-const mongoUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.asfwk.mongodb.net/simple-crud-api?retryWrites=true&w=majority`;
+const mongoUri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.asfwk.mongodb.net/crudApi?retryWrites=true&w=majority`;
 try {
   mongoose.connect(
     mongoUri,
@@ -22,6 +24,9 @@ try {
 } catch (e) {
   console.log(e);
 }
+
+// application routes
+app.use('/todo', todoHandler);
 
 const errorHandler = (err, req, res, next) => {
   if (res.headersSent) {
