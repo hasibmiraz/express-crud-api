@@ -39,7 +39,37 @@ router.get('/', async (req, res) => {
 });
 
 // Get single todo
-router.get('/:id', async (req, res) => {});
+router.get('/:id', async (req, res) => {
+  // Find with query
+  // await Todo.find({ _id: req.params.id })
+  //   .select({
+  //     _id: 0,
+  //     __v: 0,
+  //     date: 0,
+  //   })
+  //   .exec((err, data) => {
+  //     err
+  //       ? res.status(500).json({
+  //           error: 'There was a server side error',
+  //         })
+  //       : res.status(200).json({
+  //           result: data,
+  //           message: 'Success',
+  //         });
+  //   });
+
+  // Only find
+  await Todo.find({ _id: req.params.id }, (err, data) => {
+    err
+      ? res.status(500).json({
+          error: 'There was a server side error',
+        })
+      : res.status(200).json({
+          result: data,
+          message: 'Success',
+        });
+  }).clone();
+});
 
 // Post a todo
 router.post('/', async (req, res) => {
