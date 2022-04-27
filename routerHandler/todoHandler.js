@@ -123,6 +123,17 @@ router.put('/:id', async (req, res) => {
 });
 
 // delete todo
-router.delete('/:id', async (req, res) => {});
+router.delete('/:id', async (req, res) => {
+  await Todo.deleteOne({ _id: req.params.id }, (err, data) => {
+    err
+      ? res.status(500).json({
+          error: 'There was a server side error',
+        })
+      : res.status(200).json({
+          result: data,
+          message: 'Todo was deleted successfully',
+        });
+  }).clone();
+});
 
 export default router;
