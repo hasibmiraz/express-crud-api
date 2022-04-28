@@ -1,8 +1,10 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 import userSchema from '../schemas/userSchema.js';
 const router = express.Router();
+import 'dotenv/config';
 
 const User = new mongoose.model('User', userSchema);
 
@@ -23,8 +25,37 @@ router.post('/signup', async (req, res) => {
     });
   } catch (err) {
     res.status(500).json({
-      message: 'There was a server side error!',
+      message: 'Signup Failed',
     });
+  }
+});
+
+// Login
+router.post('/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const user = await User.find({ username });
+    if (user && user.length > 0) {
+      const isValidPassword = await bcrypt.compare(password, user[0].password);
+      if (isValidPassword) {
+        // generate token
+        const token = jwt.sign(
+          { username: user[0].username, userId: user[0]._id },
+          process.env.JWT_SECRET,
+          { expiresIn: '1h' }
+        );
+        res.status(200).json({
+          access_token: token,
+          message: 'Login successful',
+        });
+      } else {
+        res.status(401).json({ error: 'Authentication failed!' });
+      }
+    } else {
+      res.status(401).json({ error: 'Authentication failed!' });
+    }
+  } catch (err) {
+    res.status(401).json({ error: 'Authentication failed!' });
   }
 });
 
