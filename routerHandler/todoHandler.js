@@ -1,12 +1,14 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import checkLogin from '../middlewares/checkLogin.js';
 const router = express.Router();
 import todoSchema from '../schemas/todoSchema.js';
 
 const Todo = new mongoose.model('Todo', todoSchema);
 
 // Get all todos
-router.get('/', async (req, res) => {
+router.get('/', checkLogin, async (req, res) => {
+  console.log(req);
   // Find with query and limit
   await Todo.find({})
     .select({

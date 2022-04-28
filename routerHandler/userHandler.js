@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import userSchema from '../schemas/userSchema.js';
 const router = express.Router();
-import 'dotenv/config';
 
 const User = new mongoose.model('User', userSchema);
 
@@ -32,9 +31,9 @@ router.post('/signup', async (req, res) => {
 
 // Login
 router.post('/login', async (req, res) => {
+  const { username, password } = req.body;
+  const user = await User.find({ username });
   try {
-    const { username, password } = req.body;
-    const user = await User.find({ username });
     if (user && user.length > 0) {
       const isValidPassword = await bcrypt.compare(password, user[0].password);
       if (isValidPassword) {

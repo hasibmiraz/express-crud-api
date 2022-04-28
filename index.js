@@ -37,4 +37,6 @@ const errorHandler = (err, req, res, next) => {
   res.status(500).json({ error: err });
 };
 
+app.use(errorHandler);
+
 app.listen(port, console.log(`Listening to port ${port}`));
