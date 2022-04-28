@@ -1,6 +1,7 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import todoHandler from './routerHandler/todoHandler.js';
+import userHandler from './routerHandler/userHandler.js';
 import 'dotenv/config';
 
 // Initialize express app
@@ -27,6 +28,7 @@ try {
 
 // application routes
 app.use('/todo', todoHandler);
+app.use('/user', userHandler);
 
 const errorHandler = (err, req, res, next) => {
   if (res.headersSent) {
