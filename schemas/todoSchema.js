@@ -24,6 +24,13 @@ todoSchema.statics = {
   },
 };
 
+// Query Helpers
+todoSchema.query = {
+  byLanguage(language) {
+    return this.where({ title: new RegExp(language, 'i') });
+  },
+};
+
 // instance methods
 todoSchema.methods = {
   findActive() {
