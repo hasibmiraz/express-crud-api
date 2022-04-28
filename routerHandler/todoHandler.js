@@ -11,6 +11,7 @@ router.get('/', checkLogin, async (req, res) => {
   console.log(req);
   // Find with query and limit
   await Todo.find({})
+    .populate('user', 'name username')
     .select({
       __v: 0,
     })
@@ -118,9 +119,12 @@ router.get('/:id', async (req, res) => {
 });
 
 // Post a todo
-router.post('/', async (req, res) => {
+router.post('/', checkLogin, async (req, res) => {
+  const newTodo = new Todo({
+    ...req.body,
+    user: req.userId,
+  });
   try {
-    const newTodo = new Todo(req.body);
     await newTodo.save();
     res.status(200).json({
       message: 'Todo was inserted successfully',
