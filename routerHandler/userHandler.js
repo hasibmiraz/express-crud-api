@@ -58,4 +58,18 @@ router.post('/login', async (req, res) => {
   }
 });
 
+// Get all users
+router.get('/all', async (req, res) => {
+  try {
+    const users = await User.find().populate('todos', 'title description');
+    res.status(200).json({
+      result: users,
+      message: 'Success',
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'There was an error on the server!' });
+  }
+});
+
 export default router;
