@@ -8,70 +8,68 @@ const Todo = new mongoose.model('Todo', todoSchema);
 // Get all todos
 router.get('/', async (req, res) => {
   // Find with query and limit
-  // await Todo.find({ status: 'active' })
-  //   .select({
-  //     _id: 0,
-  //     __v: 0,
-  //     data: 0,
-  //   })
-  //   .limit(2)
-  //   .exec((err, data) => {
-  //     err
-  //       ? res.status(500).json({
-  //           error: 'There was a server side error',
-  //         })
-  //       : res.status(200).json({
-  //           result: data,
-  //           message: 'Success',
-  //         });
-  //   });
+  await Todo.find({})
+    .select({
+      _id: 0,
+      __v: 0,
+      data: 0,
+    })
+    .exec((err, data) => {
+      err
+        ? res.status(500).json({
+            error: 'There was a server side error',
+          })
+        : res.status(200).json({
+            result: data,
+            message: 'Success',
+          });
+    });
   // Only find
-  try {
-    const data = await Todo.find({ status: 'active' });
-    res.status(200).json({
-      result: data,
-      message: 'Success',
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: 'There was a server side error',
-    });
-  }
+  // try {
+  //   const data = await Todo.find({ status: 'active' });
+  //   res.status(200).json({
+  //     result: data,
+  //     message: 'Success',
+  //   });
+  // } catch (err) {
+  //   res.status(500).json({
+  //     error: 'There was a server side error',
+  //   });
+  // }
 });
 
 // Get single todo
 router.get('/:id', async (req, res) => {
   // Find with query
   // As callback used in this function. so async await is redundant in this case
-  // Todo.find({ _id: req.params.id })
-  //   .select({
-  //     _id: 0,
-  //     __v: 0,
-  //     date: 0,
-  //   })
-  //   .exec((err, data) => {
-  //     err
-  //       ? res.status(500).json({
-  //           error: 'There was a server side error',
-  //         })
-  //       : res.status(200).json({
-  //           result: data,
-  //           message: 'Success',
-  //         });
-  //   });
-
+  Todo.find({ _id: req.params.id })
+    .select({
+      _id: 0,
+      __v: 0,
+      date: 0,
+    })
+    .exec((err, data) => {
+      err
+        ? res.status(500).json({
+            error: 'There was a server side error',
+          })
+        : res.status(200).json({
+            result: data,
+            message: 'Success',
+          });
+    });
   // Only find
-  try {
-    const data = await Todo.find({ _id: req.params.id });
-    res.status(200).json({
-      result: data,
-      message: 'Success',
-    });
-  } catch (err) {
-    res.status(500).json({
-      error: 'There was a server side error',
-    });
-  }
+  // try {
+  //   const data = await Todo.find({ _id: req.params.id });
+  //   res.status(200).json({
+  //     result: data,
+  //     message: 'Success',
+  //   });
+  // } catch (err) {
+  //   res.status(500).json({
+  //     error: 'There was a server side error',
+  //   });
+  // }
 });
 
 // Post a todo
