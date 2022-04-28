@@ -59,16 +59,17 @@ router.get('/:id', async (req, res) => {
   //   });
 
   // Only find
-  await Todo.find({ _id: req.params.id }, (err, data) => {
-    err
-      ? res.status(500).json({
-          error: 'There was a server side error',
-        })
-      : res.status(200).json({
-          result: data,
-          message: 'Success',
-        });
-  }).clone();
+  try {
+    const data = await Todo.find({ _id: req.params.id });
+    res.status(200).json({
+      result: data,
+      message: 'Success',
+    });
+  } catch (err) {
+    res.status(500).json({
+      error: 'There was a server side error',
+    });
+  }
 });
 
 // Post a todo
