@@ -10,9 +10,7 @@ router.get('/', async (req, res) => {
   // Find with query and limit
   await Todo.find({})
     .select({
-      _id: 0,
       __v: 0,
-      data: 0,
     })
     .exec((err, data) => {
       err
@@ -42,9 +40,7 @@ router.get('/', async (req, res) => {
 router.get('/active', async (req, res) => {
   const todo = new Todo();
   const data = await todo.findActive().select({
-    _id: 0,
     __v: 0,
-    data: 0,
   });
   res.status(200).json({
     data,
@@ -69,15 +65,22 @@ router.get('/active-callback', (req, res) => {
     });
 });
 
+// Find todos with title includes js
+router.get('/js', async (req, res) => {
+  const data = await Todo.findByTodo();
+  res.status(200).json({
+    data,
+    message: 'Success',
+  });
+});
+
 // Get single todo
 router.get('/:id', async (req, res) => {
   // Find with query
   // As callback used in this function. so async await is redundant in this case
   Todo.find({ _id: req.params.id })
     .select({
-      _id: 0,
       __v: 0,
-      date: 0,
     })
     .exec((err, data) => {
       err
