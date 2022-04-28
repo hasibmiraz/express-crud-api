@@ -52,6 +52,23 @@ router.get('/active', async (req, res) => {
   });
 });
 
+// Find active todos with callback
+router.get('/active-callback', (req, res) => {
+  const todo = new Todo();
+  todo
+    .findActiveCallback((err, data) => {
+      res.status(200).json({
+        data,
+        message: 'Success',
+      });
+    })
+    .select({
+      _id: 0,
+      __v: 0,
+      data: 0,
+    });
+});
+
 // Get single todo
 router.get('/:id', async (req, res) => {
   // Find with query

@@ -21,6 +21,9 @@ todoSchema.methods = {
   findActive() {
     return mongoose.model('Todo').find({ status: 'active' });
   },
+  findActiveCallback(cb) {
+    return mongoose.model('Todo').find({ status: 'active' }, cb);
+  },
 };
 
 export default todoSchema;
